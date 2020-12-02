@@ -1,0 +1,37 @@
+#Code designs
+
+'''
+Gamename:Black Jack
+Creater: Jinhong Lin
+'''
+
+__name__ == '__main__'
+
+def player_inform():
+    player_name = input('Please Enter Your Username:')
+
+    print('welcome [{}]'.format(player_name))
+
+def user_score():
+    player_score = 0
+
+def save_user():
+    pass
+
+def A_deck_of_cards():
+    pass
+
+def random_cards():
+    pass
+
+def start_game():
+    pass
+
+def next_game():
+    pass
+
+def count_scores():
+    pass
+
+def sum_scores():
+    pass
