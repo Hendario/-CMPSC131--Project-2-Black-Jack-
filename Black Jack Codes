@@ -3,22 +3,39 @@ Gamename:Black Jack
 Creater: Jinhong Lin
 '''
 
-__name__ == '__main__'
+import time
+import random
+from random import shuffle
+
 class Cards:
     palying_cards = {}
     cards1 = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
-    card_color = ['红桃', '方块', '黑桃', '梅花']
+    card_color = ['♦', '♣', '♥', '♠']
     new_card = []
+
+
+def player_inform():
+    player_name = input('Please Enter Your Username:')
+
+    print('welcome [{}]'.format(player_name))
+
+def ask():
+    ask1 = input('Do you want to create a New User?(Yes/No)')
 
 def new_user():
     ask = input('Are you a New User to the game?(Yes/No)')
-    if ask == 'yes':
+    if ask == 'Yes':
         ask1 = input('Do you want to create a New User?(Yes/No)')
         if ask1 == 'Yes':
             player_inform()
         else:
-            return ask1
-
+            print('You Must have an User account to play the game')
+            ask3 = input('Do you want to exit the game?')
+            if ask3 == 'Yes':
+                exit()
+            else:
+                print("I don't care, I exit your program anyway.")
+                exit()
     elif ask == 'No':
         ask2 = input('Do you want to Use your other User?(Yes/No)')
         if ask2 == 'Yes':
@@ -28,27 +45,14 @@ def new_user():
             if ask1 == 'Yes':
                 player_inform()
             else:
-                return ask1
+                print('You Must have an User account to play the game')
+                exit()
 
 def save_user():
     pass
 
 def open_save_user():
     pass
-
-def player_inform():
-    player_name = input('Please Enter Your Username:')
-
-    print('welcome [{}]'.format(player_name))
-
-player_inform()
-
-
-def each_game_score():
-    pass
-
-def user_score_save():
-    player_score = 0
 
 
 def A_deck_of_cards():
@@ -66,5 +70,13 @@ def next_game():
 def count_scores():
     pass
 
+def each_game_score():
+    pass
+
+def user_score_save():
+    player_score = 0
+
 def exit():
     pass
+
+new_user()
