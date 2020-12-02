@@ -1,22 +1,55 @@
-#Code designs
-
 '''
 Gamename:Black Jack
 Creater: Jinhong Lin
 '''
 
 __name__ == '__main__'
+class Cards:
+    palying_cards = {}
+    cards1 = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+    card_color = ['红桃', '方块', '黑桃', '梅花']
+    new_card = []
+
+def new_user():
+    ask = input('Are you a New User to the game?(Yes/No)')
+    if ask == 'yes':
+        ask1 = input('Do you want to create a New User?(Yes/No)')
+        if ask1 == 'Yes':
+            player_inform()
+        else:
+            return ask1
+
+    elif ask == 'No':
+        ask2 = input('Do you want to Use your other User?(Yes/No)')
+        if ask2 == 'Yes':
+            return open_save_user()
+        elif ask2 == 'No':
+            ask1 = input('Do you want to create a New User?(Yes/No)')
+            if ask1 == 'Yes':
+                player_inform()
+            else:
+                return ask1
+
+def save_user():
+    pass
+
+def open_save_user():
+    pass
 
 def player_inform():
     player_name = input('Please Enter Your Username:')
 
     print('welcome [{}]'.format(player_name))
 
-def user_score():
+player_inform()
+
+
+def each_game_score():
+    pass
+
+def user_score_save():
     player_score = 0
 
-def save_user():
-    pass
 
 def A_deck_of_cards():
     pass
@@ -33,5 +66,5 @@ def next_game():
 def count_scores():
     pass
 
-def sum_scores():
+def exit():
     pass
