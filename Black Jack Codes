@@ -2,81 +2,130 @@
 Gamename:Black Jack
 Creater: Jinhong Lin
 '''
-
-import time
 import random
 from random import shuffle
 
-class Cards:
-    palying_cards = {}
-    cards1 = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
-    card_color = ['♦', '♣', '♥', '♠']
-    new_card = []
+new_card = []
+card_color = [' ♦', ' ♣', ' ♥', ' ♠']  # ♦ = Diamond, ♣ = Clubs, ♥ = Hearts, ♠ = Spades
+cards1 = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']  # cards in a poker (Jokers not included)
+
+for i in cards1:  # Create a inside loop to create a deck of poker cards.
+    for a in card_color:
+        new_card.append(a + i)
 
 
-def player_inform():
-    player_name = input('Please Enter Your Username:')
+# shuffle the deck, make the cards random
+def random_card(cards, num=1):
+    cards = cards * num
+    shuffle(cards)
+    return cards
 
-    print('welcome [{}]'.format(player_name))
 
-def ask():
-    ask1 = input('Do you want to create a New User?(Yes/No)')
 
-def new_user():
-    ask = input('Are you a New User to the game?(Yes/No)')
-    if ask == 'Yes':
-        ask1 = input('Do you want to create a New User?(Yes/No)')
-        if ask1 == 'Yes':
-            player_inform()
+def game_play(cards):      #start the game, and send both of the players 2 cards.
+    if len(cards) < 2:      #check the cards in the deck
+        global new_cards
+        new_cards = random_card(new_card)
+        print('Cards is shuffled!')
+        cards = new_cards
+    news = cards.pop() + ',' + cards.pop()
+    return news
+
+def game_nextcard(cards):       #if you would like another card
+    news = cards.pop()
+
+    if news == None:        #if there's not enough cards, get an new deck of cards.
+        global new_cards
+        new_cards = random_card(new_card)
+        print('Cards is shuffled!')
+        news = new_cards.pop()
+    return news
+
+
+def total_points(count):        #count the total points for the cards.
+    new_count = 0
+    news = count.split(',')
+
+    count_a = 0     #in this case, A is an special card.
+    for i in news:
+        if i[2:].isdigit():
+            new_count += int(i[2:])
+        elif i[2:].upper() == 'A':
+            count_a += 1
         else:
-            print('You Must have an User account to play the game')
-            ask3 = input('Do you want to exit the game?')
-            if ask3 == 'Yes':
-                exit()
+            new_count += 10
+
+    if new_count > 10:      #points for other cards instead of Ace
+        new_count += count_a
+    elif count_a == 0:
+        new_count += count_a
+    else:
+        new_count += 10 + count_a
+    return new_count
+
+
+new_cards=random_card(new_card)
+count_start = True
+while count_start:
+    print('Welcome to the game [Black Jack]')
+    print('This is your cards')
+    count = game_play(new_cards)
+    new_count = total_points(count)
+    print('The cards on your hand：%s'%count)
+    print('Total points：%s'%new_count)
+    #---------------------------------------
+    computer_count = game_play(new_cards)
+    computer_new_count = total_points(computer_count)
+    print('The cards on A.I hand：%s'%computer_count)
+    print('Total points：%s'%computer_new_count)
+    #----------------------------------------
+    while True:
+        news=input('Do you want another card?(Y/N):')
+        if news.upper() == 'Y':
+            count1= game_nextcard(new_cards)
+            count += ',' + count1
+            new_count = total_points(count)
+            print('The card you have now：%s' % count)
+            print('Total points：%s' % new_count)
+            if new_count > 21:
+                new_count = 0
+                print ('BUSTS!!!')
+                break
+        elif news.upper() == 'N':
+            print ('Your Points:%s'%new_count)
+            break
+        else:
+                print ('Please Enter Again')
+
+    if new_count > 0:       #A.I System
+        while computer_new_count < new_count:
+            count2=game_nextcard(new_cards)
+            computer_count += ',' + count2
+            computer_new_count = total_points(computer_count)
+            print('A.I cards on hand：%s' % computer_count)
+            print('Total Points：%s' % computer_new_count)
+            if computer_new_count > 21:
+                print ('[You Win This Round!]')
+            elif computer_new_count < new_count:
+                print ('A.I want another card!')
+            elif computer_new_count == new_count:
+                print('[Tie!]')
             else:
-                print("I don't care, I exit your program anyway.")
-                exit()
-    elif ask == 'No':
-        ask2 = input('Do you want to Use your other User?(Yes/No)')
-        if ask2 == 'Yes':
-            return open_save_user()
-        elif ask2 == 'No':
-            ask1 = input('Do you want to create a New User?(Yes/No)')
-            if ask1 == 'Yes':
-                player_inform()
+                print ('[A.I Win This Round！]')
+    while True:
+        count_start=input('Do you still want to play?(Y/N:)')
+        if count_start.upper() == 'Y':
+            infor=input('Continue with this deck?(Y/N:)')
+            if infor.upper() == 'Y':
+                break
+            elif infor.upper() == 'N':
+                new_cards = random_card(new_card)
+                break
             else:
-                print('You Must have an User account to play the game')
-                exit()
+                print ('Enter it again Please!')
+        elif count_start.upper() == 'N':
+            count_start = False
+            break
+        else:
+            print ('Enter it again Please!')
 
-def save_user():
-    pass
-
-def open_save_user():
-    pass
-
-
-def A_deck_of_cards():
-    pass
-
-def random_cards():
-    pass
-
-def start_game():
-    pass
-
-def next_game():
-    pass
-
-def count_scores():
-    pass
-
-def each_game_score():
-    pass
-
-def user_score_save():
-    player_score = 0
-
-def exit():
-    pass
-
-new_user()
