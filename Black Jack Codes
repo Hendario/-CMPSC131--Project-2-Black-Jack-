@@ -1,6 +1,6 @@
 '''
 Game Name:Black Jack
-Creater:Jinhong Lin&Jinxiang Chen
+Creater:Jinhong Lin & Jinxiang Chen
 '''
 import random
 from random import sample
@@ -64,7 +64,9 @@ def total_points(count):        #count the total points for the cards.
         new_count += 10 + count_a
     return new_count
 
-lines = print('--------------------------------')
+Player_name = 'Jinhong Lin'
+AI_name = 'Jimmy'
+
 new_cards=random_card(new_card)
 count_start = True
 while count_start:
@@ -80,7 +82,7 @@ while count_start:
     #---------------------------------------
     computer_count = game_play(new_cards)
     computer_new_count = total_points(computer_count)
-    print('The cards on A.I hand：%s'%computer_count)
+    print('The cards on [%s] hand：%s'%(AI_name,computer_count))
     print('Total points：%s'%computer_new_count)
     print('❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤')
     #----------------------------------------
@@ -95,13 +97,23 @@ while count_start:
             print('--------------------------------')
             if new_count > 21:
                 new_count = 0
-                print ('BUSTED!!!')
-                print('--------------------------------')
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                print ('☾YOU BUSTED!!![%s] Win this Round!!!☽' % AI_name)
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 break
         elif news.upper() == 'N':
-            print ('Your Points:%s'%new_count)
-            print('--------------------------------')
-            break
+            if int(new_count) == (computer_new_count):
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                print('☾You and [%s] same points, Tie!☽' % AI_name)
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                break
+            elif int(new_count) < int(computer_new_count):
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                print('☾[[%s] Win This Round！☽' % AI_name)
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                break
+            else:
+                break
         else:
             print ('Please Enter Again')
             print('--------------------------------')
@@ -111,22 +123,22 @@ while count_start:
             count2=game_nextcard(new_cards)
             computer_count += ',' + count2
             computer_new_count = total_points(computer_count)
-            print('A.I cards on hand：%s' % computer_count)
+            print('[%s] cards on hand：%s2' % (AI_name,computer_count))
             print('Total Points：%s' % computer_new_count)
             print('--------------------------------')
             if computer_new_count > 21:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
-                print ('[You Win This Round!]')
+                print('☾[%s] BUSTED!!!You Win this Round!!!☽' % AI_name)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
             elif computer_new_count < new_count:
-                print ('A.I want another card!')
+                print ('[%s] want another card!'%AI_name)
             elif computer_new_count == new_count:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
-                print('[Tie!]')
+                print('☾You and [%s] same points, Tie!☽'%AI_name)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
             else:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
-                print ('[A.I Win This Round！]')
+                print ('☾[[%s] Win This Round！☽'%AI_name)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
     while True:
         count_start=input('Do you still want to play?(Y/N:)')
