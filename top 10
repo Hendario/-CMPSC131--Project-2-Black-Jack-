@@ -1,0 +1,20 @@
+import csv
+
+def top_ten():
+    top = []
+    all_scores = []
+
+    with open('scores.csv', 'r') as csvfile:
+        scores = csv.reader(csvfile)
+
+        for row in scores:
+            all_scores.append((row[0], int(row[1])))
+
+
+        top = sorted(
+            all_scores,
+            key=lambda score: score[1],
+            reverse=True)
+    return top[:10]
+
+print(top_ten())
