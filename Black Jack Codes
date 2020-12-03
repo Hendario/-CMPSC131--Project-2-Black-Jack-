@@ -1,8 +1,5 @@
-'''
-Gamename:Black Jack
-Creater: Jinhong Lin
-'''
 import random
+from random import sample
 from random import shuffle
 
 new_card = []
@@ -63,21 +60,25 @@ def total_points(count):        #count the total points for the cards.
         new_count += 10 + count_a
     return new_count
 
-
+lines = print('--------------------------------')
 new_cards=random_card(new_card)
 count_start = True
 while count_start:
+    print('❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤')
     print('Welcome to the game [Black Jack]')
+    print('❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤')
     print('This is your cards')
     count = game_play(new_cards)
     new_count = total_points(count)
     print('The cards on your hand：%s'%count)
     print('Total points：%s'%new_count)
+    print('--------------------------------')
     #---------------------------------------
     computer_count = game_play(new_cards)
     computer_new_count = total_points(computer_count)
     print('The cards on A.I hand：%s'%computer_count)
     print('Total points：%s'%computer_new_count)
+    print('❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤')
     #----------------------------------------
     while True:
         news=input('Do you want another card?(Y/N):')
@@ -87,15 +88,19 @@ while count_start:
             new_count = total_points(count)
             print('The card you have now：%s' % count)
             print('Total points：%s' % new_count)
+            print('--------------------------------')
             if new_count > 21:
                 new_count = 0
-                print ('BUSTS!!!')
+                print ('BUSTED!!!')
+                print('--------------------------------')
                 break
         elif news.upper() == 'N':
             print ('Your Points:%s'%new_count)
+            print('--------------------------------')
             break
         else:
-                print ('Please Enter Again')
+            print ('Please Enter Again')
+            print('--------------------------------')
 
     if new_count > 0:       #A.I System
         while computer_new_count < new_count:
@@ -104,14 +109,21 @@ while count_start:
             computer_new_count = total_points(computer_count)
             print('A.I cards on hand：%s' % computer_count)
             print('Total Points：%s' % computer_new_count)
+            print('--------------------------------')
             if computer_new_count > 21:
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print ('[You Win This Round!]')
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
             elif computer_new_count < new_count:
                 print ('A.I want another card!')
             elif computer_new_count == new_count:
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print('[Tie!]')
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
             else:
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print ('[A.I Win This Round！]')
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
     while True:
         count_start=input('Do you still want to play?(Y/N:)')
         if count_start.upper() == 'Y':
@@ -122,10 +134,10 @@ while count_start:
                 new_cards = random_card(new_card)
                 break
             else:
-                print ('Enter it again Please!')
+                print ('Enter it again Please!(Y/N)')
         elif count_start.upper() == 'N':
             count_start = False
             break
         else:
-            print ('Enter it again Please!')
+            print ('Enter it again Please!(Y/N)')
 
