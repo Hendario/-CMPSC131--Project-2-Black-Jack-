@@ -34,12 +34,6 @@ def game_play(cards):      #start the game, and send both of the players 2 cards
 
 def game_nextcard(cards):       #if you would like another card
     news = cards.pop()
-
-    if news == None:        #if there's not enough cards, get an new deck of cards.
-        global new_cards
-        new_cards = random_card(new_card)
-        print('Cards is shuffled!')
-        news = new_cards.pop()
     return news
 
 
@@ -123,7 +117,7 @@ while count_start:
             count2=game_nextcard(new_cards)
             computer_count += ',' + count2
             computer_new_count = total_points(computer_count)
-            print('[%s] cards on hand：%s2' % (AI_name,computer_count))
+            print('[%s] cards on hand：%s' % (AI_name,computer_count))
             print('Total Points：%s' % computer_new_count)
             print('--------------------------------')
             if computer_new_count > 21:
@@ -143,14 +137,11 @@ while count_start:
     while True:
         count_start=input('Do you still want to play?(Y/N:)')
         if count_start.upper() == 'Y':
-            infor=input('Continue with this deck?(Y/N:)')
-            if infor.upper() == 'Y':
-                break
-            elif infor.upper() == 'N':
-                new_cards = random_card(new_card)
-                break
-            else:
-                print ('Enter it again Please!(Y/N)')
+            new_cards = random_card(new_card)
+            infor='Cards shuffled'
+            print(infor)
+            print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+            break
         elif count_start.upper() == 'N':
             count_start = False
             break
