@@ -21,6 +21,3 @@ def save(scores):
     for info in scores:
         scores_csv.write(str(info) + "\n")  # Store by line, add line break
     scores_csv.close()  # close the file
-
-if __name__ == '__main__':
-    add()
