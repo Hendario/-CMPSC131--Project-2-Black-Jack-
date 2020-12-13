@@ -1,8 +1,5 @@
-'''
-Game Name:Black Jack
-Creater:Jinhong Lin & Jinxiang Chen
-'''
 import random
+import csv
 from random import sample
 from random import shuffle
 
@@ -14,6 +11,32 @@ for i in cards1:  # Create a inside loop to create a deck of poker cards.
     for a in card_color:
         new_card.append(a + i)
 
+filename = 'scores.csv'
+def add():
+    scorelist = []
+    while True:
+        name = input("Plese Enter Your name：")
+        sc = {"Name": name, "score":score}
+        scorelist.append(sc)  # Add student dictionary to list
+        inputMark = input("Do you want to play again?(y/n):")
+        if inputMark == "Yes":  # Keep adding
+            continue
+        else:  # Do not continue to add
+            break
+    save(scorelist)  # Save student information to file
+    print("Gameover")
+
+def over():
+    print('Gameover')
+
+def save(scores):
+    try:
+        scores_csv = open(filename, "a")  # Open in append mode
+    except Exception as e:
+        scores_csv = open(filename,"w+")  # when the file does not exist,it will create a file and open
+    for info in scores:
+        scores_csv.write(str(info) + "\n")  # Store by line, add line break
+    scores_csv.close()  # close the file
 
 # shuffle the deck, make the cards random
 def random_card(cards, num=1):
@@ -60,6 +83,9 @@ def total_points(count):        #count the total points for the cards.
 
 Player_name = 'Jinhong Lin'
 AI_name = 'Jimmy'
+score = 0
+scorelist = []
+filename = 'scores.csv'
 
 new_cards=random_card(new_card)
 count_start = True
@@ -93,17 +119,20 @@ while count_start:
                 new_count = 0
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print ('☾YOU BUSTED!!![%s] Win this Round!!!☽' % AI_name)
+                print('Your score:',score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 break
         elif news.upper() == 'N':
             if int(new_count) == (computer_new_count):
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print('☾You and [%s] same points, Tie!☽' % AI_name)
+                print('Your score:',score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 break
             elif int(new_count) < int(computer_new_count):
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print('☾[[%s] Win This Round！☽' % AI_name)
+                print('Your score:',score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 break
             else:
@@ -111,7 +140,6 @@ while count_start:
         else:
             print ('Please Enter Again')
             print('--------------------------------')
-
     if new_count > 0:       #A.I System
         while computer_new_count < new_count:
             count2=game_nextcard(new_cards)
@@ -123,16 +151,20 @@ while count_start:
             if computer_new_count > 21:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print('☾[%s] BUSTED!!!You Win this Round!!!☽' % AI_name)
+                score = score+1
+                print('Your score', score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
             elif computer_new_count < new_count:
                 print ('[%s] want another card!'%AI_name)
             elif computer_new_count == new_count:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print('☾You and [%s] same points, Tie!☽'%AI_name)
+                print('Your score:', score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
             else:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print ('☾[[%s] Win This Round！☽'%AI_name)
+                print('Your score:', score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
     while True:
         count_start=input('Do you still want to play?(Y/N:)')
@@ -144,7 +176,22 @@ while count_start:
             break
         elif count_start.upper() == 'N':
             count_start = False
-            break
+            print('Your score:',score)
+            user=input('Do you want to save you score?(Y/N):')
+            if user.upper() == "Y":
+                add()
+                break
+            elif user.upper() =='N':
+                over()
+                break
+            else:
+                print('Enter it again Please!(Y/N)')
+
         else:
             print ('Enter it again Please!(Y/N)')
+
+            score = 0
+            if computer_new_count > 21:
+                score = score+1
+                print(score)
 
