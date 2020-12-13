@@ -1,0 +1,201 @@
+import random
+import csv
+from random import sample
+from random import shuffle
+
+
+new_card = []
+card_color = [' ♦', ' ♣', ' ♥', ' ♠']  # ♦ = Diamond, ♣ = Clubs, ♥ = Hearts, ♠ = Spades
+cards1 = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']  # cards in a poker (Jokers not included)
+for i in cards1:  # Create a inside loop to create a deck of poker cards.
+    for a in card_color:
+        new_card.append(a + i)
+def top_ten():
+    top = []
+    all_scores = []
+
+    with open('scores.csv', 'r') as csvfile:
+        scores = csv.reader(csvfile)
+
+        for row in scores:
+            all_scores.append((row[0], row[1]))
+            top = sorted(
+                all_scores,
+                key=lambda score: score[1],
+                reverse=True)
+        return top[:10]
+print('TOP10')
+print(top_ten())
+
+if __name__ == '__main__':
+    top_ten()
+
+filename = 'scores.csv'
+def add():
+    scorelist = []
+    while True:
+        name = input("Plese Enter Your name：")
+        sc = {"Name": name, "score":score}
+        scorelist.append(sc)  # Add student dictionary to list
+        inputMark = input("Do you want to play again?(y/n):")
+        if inputMark == "Yes":  # Keep adding
+            continue
+        else:  # Do not continue to add
+            break
+    save(scorelist)  # Save student information to file
+    print("Gameover")
+def over():
+    print('Gameover')
+def save(scores):
+    try:
+        scores_csv = open(filename, "a")  # Open in append mode
+    except Exception as e:
+        scores_csv = open(filename,"w+")  # when the file does not exist,it will create a file and open
+    for info in scores:
+        scores_csv.write(str(info) + "\n")  # Store by line, add line break
+    scores_csv.close()  # close the file
+# shuffle the deck, make the cards random
+def random_card(cards, num=1):
+    cards = cards * num
+    shuffle(cards)
+    return cards
+def game_play(cards):      #start the game, and send both of the players 2 cards.
+    if len(cards) < 2:      #check the cards in the deck
+        global new_cards
+        new_cards = random_card(new_card)
+        print('Cards is shuffled!')
+        cards = new_cards
+    news = cards.pop() + ',' + cards.pop()
+    return news
+def game_nextcard(cards):       #if you would like another card
+    news = cards.pop()
+    return news
+def total_points(count):        #count the total points for the cards.
+    new_count = 0
+    news = count.split(',')
+    count_a = 0     #in this case, A is an special card.
+    for i in news:
+        if i[2:].isdigit():
+            new_count += int(i[2:])
+        elif i[2:].upper() == 'A':
+            count_a += 1
+        else:
+            new_count += 10
+    if new_count > 10:      #points for other cards instead of Ace
+        new_count += count_a
+    elif count_a == 0:
+        new_count += count_a
+    else:
+        new_count += 10 + count_a
+    return new_count
+
+Player_name = 'Jinhong Lin'
+AI_name = 'Jimmy'
+score = 0
+scorelist = []
+filename = 'scores.csv'
+new_cards=random_card(new_card)
+count_start = True
+while count_start:
+    print('❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤')
+    print('Welcome to the game [Black Jack]')
+    print('❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤')
+    print('This is your cards')
+    count = game_play(new_cards)
+    new_count = total_points(count)
+    print('The cards on your hand：%s'%count)
+    print('Total points：%s'%new_count)
+    print('--------------------------------')
+    #---------------------------------------
+    computer_count = game_play(new_cards)
+    computer_new_count = total_points(computer_count)
+    print('The cards on [%s] hand：%s'%(AI_name,computer_count))
+    print('Total points：%s'%computer_new_count)
+    print('❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤')
+    #----------------------------------------
+    while True:
+        news=input('Do you want another card?(Y/N):')
+        if news.upper() == 'Y':
+            count1= game_nextcard(new_cards)
+            count += ',' + count1
+            new_count = total_points(count)
+            print('The card you have now：%s' % count)
+            print('Total points：%s' % new_count)
+            print('--------------------------------')
+            if new_count > 21:
+                new_count = 0
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                print ('☾YOU BUSTED!!![%s] Win this Round!!!☽' % AI_name)
+                print('Your score:',score)
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                break
+        elif news.upper() == 'N':
+            if int(new_count) == (computer_new_count):
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                print('☾You and [%s] same points, Tie!☽' % AI_name)
+                print('Your score:',score)
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                break
+            elif int(new_count) < int(computer_new_count):
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                print('☾[[%s] Win This Round！☽' % AI_name)
+                print('Your score:',score)
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                break
+            else:
+                break
+        else:
+            print ('Please Enter Again')
+            print('--------------------------------')
+    if new_count > 0:       #A.I System
+        while computer_new_count < new_count:
+            count2=game_nextcard(new_cards)
+            computer_count += ',' + count2
+            computer_new_count = total_points(computer_count)
+            print('[%s] cards on hand：%s' % (AI_name,computer_count))
+            print('Total Points：%s' % computer_new_count)
+            print('--------------------------------')
+            if computer_new_count > 21:
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                print('☾[%s] BUSTED!!!You Win this Round!!!☽' % AI_name)
+                score = score+1
+                print('Your score', score)
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+            elif computer_new_count < new_count:
+                print ('[%s] want another card!'%AI_name)
+            elif computer_new_count == new_count:
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                print('☾You and [%s] same points, Tie!☽'%AI_name)
+                print('Your score:', score)
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+            else:
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                print ('☾[[%s] Win This Round！☽'%AI_name)
+                print('Your score:', score)
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+        while True:
+            count_start=input('Do you still want to play?(Y/N:)')
+            if count_start.upper() == 'Y':
+                new_cards = random_card(new_card)
+                infor='Cards shuffled'
+                print(infor)
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                break
+            elif count_start.upper() == 'N':
+                count_start = False
+                print('Your score:',score)
+                user=input('Do you want to save you score?(Y/N):')
+                if user.upper() == "Y":
+                    add()
+                    break
+                elif user.upper() =='N':
+                    over()
+                    break
+                else:
+                    print('Enter it again Please!(Y/N)')
+            else:
+                print ('Enter it again Please!(Y/N)')
+                score = 0
+                if computer_new_count > 21:
+                    score = score+1
+                    print(score)
