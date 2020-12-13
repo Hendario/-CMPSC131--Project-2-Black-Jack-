@@ -1,3 +1,8 @@
+'''
+Game Name:Black Jack
+Creater:Jinhong Lin & Jinxiang Chen
+'''
+
 import random
 import csv
 from random import sample
