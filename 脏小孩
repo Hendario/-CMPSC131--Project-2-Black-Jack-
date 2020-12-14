@@ -18,13 +18,8 @@ class User_data():
         self.autosave = True
 
     def new_user(self,new_user_data):
-        new_user_data = input('Please Enter Your User_name:')
-        f = open('database.txt', 'a+')
-        for i in range(1):
-            f.write(new_user_data)
-            f.write('\n')
-            f.close
-            break
+        username = input('Welcome new player!\nWhat is your Username?\n')  # A New Username
+        print('Welcome [%s]' % username)
 
     def del_user(self,old_user_data):
         pass
@@ -47,8 +42,6 @@ class User_data():
                     key=lambda score: score[1],
                     reverse=True)
         return top[:10]
-
-
 
     def user_gamenum(self,y):
         y = 0
@@ -140,8 +133,10 @@ def total_points(count):        #count the total points for the cards.
 
 x = User_data()
 AI_name = 'Jimmy'
-score = 0
+score = 0       #score for you
+score2 = 0      #score for ai
 scorelist = []
+username = 0
 filename = 'scores.csv'
 new_cards=random_card(new_card)
 x.user_gamenum(0)
@@ -150,11 +145,18 @@ print('Here is the Top 10 Player records!')
 print('--------------------------------')
 print('If you are new, there will be no data')
 print(*x.top10(0), sep = '\n')
-username = input('Welcome new player!\nWhat is your Username?\n')       #A New Username
-print('Welcome [%s]' %username)
-ai_name = input('Would you like to named your opponent?')
-if ai_name == 'Y':
-    pass
+x.new_user(0)
+name = True
+while name:
+    ai_name = input('Would you like to named your opponent?(Y/N)\n')
+    if ai_name.upper() == 'Y':
+        AI_name = input('Please name your opponent!!!\n')
+        break
+    elif ai_name.upper() == 'N':
+        print('Ok, We will give you a assigned opponent name [%s]' %AI_name)
+        break
+    else:
+        print('Please Enter something I understand...')
 print('--------------------------------')
 
 count_start = True
@@ -194,7 +196,7 @@ while count_start:      #Game Start to loop
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 break
         elif news.upper() == 'N':
-            if int(new_count) == (computer_new_count):
+            if int(new_count) == int(computer_new_count):
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print('☾You and [%s] same points, Tie!☽' % AI_name)
                 print('Your score:',score)
