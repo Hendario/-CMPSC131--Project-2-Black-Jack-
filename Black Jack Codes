@@ -16,30 +16,26 @@ for i in cards1:  # Create a inside loop to create a deck of poker cards.
     for a in card_color:
         new_card.append(a + i)
 
-class User_data():
+class User_data():      #A Class of userdatas
     import random
-    def __init__(self):
+    def __init__(self):     #If we might need it
         self.autosave = True
 
-    def new_user(self,new_user_data):
+    def new_user(self):     #Hello!
         print('Welcome [%s]' % username)
 
-    def user(self):
+    def user(self):     #return the username
         return username
 
-    def del_user(self,old_user_data):
-        pass
-
-    def user_score(self,score):
+    def user_score(self,score):     #return user scores
         user_score = score
         return user_score
 
-    def create_csv(self,csv):
-        csv = 0
+    def create_csv(self):       #create a scores.csv file if we don't have this file already.
         f = open('scores.scv','w+')
         f.close()
 
-    def top10(self,score):
+    def top10(self):        #show the top 10 of the player datas
         top = []
         all_scores = []
 
@@ -54,8 +50,7 @@ class User_data():
                     reverse=True)
         return top[:10]
 
-    def user_gamenum(self,y):
-        y = 0
+    def user_gamenum(self):     #To see how many player is recorded in game
         f = open('scores.csv','r')
         Gcount = 0
         # Reading from file
@@ -69,26 +64,23 @@ class User_data():
         gamenum = Gcount
         print('We have found you have %s records!'% gamenum)
 
-    def save_user(self,username):
+    def save_user(self,username):       #save the userdata at the end
         scorelist = []
         sc = {"Name": username, "score": score}
         scorelist.append(sc)  # Add student dictionary to list
         save(scorelist)  # Save student information to file
         print("Gameover, Thanks for playing [%s]" % (username))
 
-    def load_user(self):
+    def load_user(self):        #open all user datas
         f = open('scores.csv', 'r')
         file_contents = f.read()
         print('Here is your UserDatas \n\n%s' % file_contents)
 
-    def over(self):
+    def over(self):     #end the game without any data saved
         print('Gameover, You have exit the game with no data saved.')
 
 
-filename = 'scores.csv'
-
-
-def save(scores):
+def save(scores):       #the system to save the scores into the csv
     try:
         scores_csv = open(filename, "a")  # Open in append mode
     except Exception as e:
@@ -97,9 +89,9 @@ def save(scores):
         scores_csv.write(str(info) + "\n")  # Store by line, add line break
     scores_csv.close()  # close the file
 
+#This is how the game system looks like
 
-# shuffle the deck, make the cards random
-def random_card(cards, num=1):
+def random_card(cards, num=1):      # shuffle the deck, make the cards random
     cards = cards * num
     shuffle(cards)
     return cards
@@ -141,17 +133,17 @@ AI_name = 'Jimmy'
 score = 0       #score to count the card number ; to count player score
 ai_score = 0      #score for ai
 username = input('Welcome new player!\nWhat is your Username?\n')  # A New Username
-x.new_user(0)
-filename = 'scores.csv'
-new_cards=random_card(new_card)
+x.new_user()
+filename = 'scores.csv'     #must have data
+new_cards=random_card(new_card)     #shuffle the deck
 
-x.user_gamenum(0)
-x.create_csv(0)
+x.user_gamenum()
+x.create_csv()
 print('--------------------------------')
 print('Here is the Top 10 Player records!')
 print('--------------------------------')
-print('If you are new, there will be no data')
-print(*x.top10(0), sep = '\n')
+print('[If you are new, here will be no data shown]')
+print(*x.top10(), sep = '\n')
 
 name = True
 while name:
