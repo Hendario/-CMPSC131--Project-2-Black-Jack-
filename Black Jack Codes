@@ -1,6 +1,6 @@
 '''
 Game Name:Black Jack
-Creater:Jinhong Lin & Jinxiang Chen
+Creaters:Jinhong Lin & Jinxiang Chen
 '''
 
 
@@ -17,7 +17,7 @@ for i in cards1:  # Create a inside loop to create a deck of poker cards.
         new_card.append(a + i)
 
 class User_data():      #A Class of userdatas
-    import random
+
     def __init__(self):     #If we might need it
         self.autosave = True
 
@@ -32,11 +32,10 @@ class User_data():      #A Class of userdatas
         return user_score
 
     def create_csv(self):       #create a scores.csv file if we don't have this file already.
-        f = open('scores.scv','w+')
-        f.close()
+        with open('scores.scv','w+') as csvfile:
+            csvfile.close()
 
     def top10(self):        #show the top 10 of the player datas
-        top = []
         all_scores = []
 
         with open('scores.csv', 'r') as csvfile:
@@ -51,7 +50,7 @@ class User_data():      #A Class of userdatas
         return top[:10]
 
     def user_gamenum(self):     #To see how many player is recorded in game
-        f = open('scores.csv','r')
+        f = open('scores.csv', 'r')
         Gcount = 0
         # Reading from file
         Content = f.read()
@@ -69,7 +68,7 @@ class User_data():      #A Class of userdatas
         sc = {"Name": username, "score": score}
         scorelist.append(sc)  # Add student dictionary to list
         save(scorelist)  # Save student information to file
-        print("Gameover, Thanks for playing [%s]" % (username))
+        print("Gameover, Thanks for playing [%s]" % username)
 
     def load_user(self):        #open all user datas
         f = open('scores.csv', 'r')
@@ -129,16 +128,27 @@ def total_points(count):        #count the total points for the cards.
     return new_count
 
 x = User_data()
+
 AI_name = 'Jimmy'
 score = 0       #score to count the card number ; to count player score
-ai_score = 0      #score for ai
 username = input('Welcome new player!\nWhat is your Username?\n')  # A New Username
 x.new_user()
-filename = 'scores.csv'     #must have data
+filename = 'scores.csv'  #must have this file
 new_cards=random_card(new_card)     #shuffle the deck
 
 x.user_gamenum()
-x.create_csv()
+csv_checker = input('Do you have scores.csv in your folder?(Y/N)')
+csvtrue = True
+while csvtrue:
+    if csv_checker.upper() == 'Y':
+        print('Nice, we will show you the data now')
+        break
+    elif csv_checker.upper() == 'N':
+        x.create_csv()
+        break
+    else:
+        print('Please Enter something I can understand.')
+
 print('--------------------------------')
 print('Here is the Top 10 Player records!')
 print('--------------------------------')
