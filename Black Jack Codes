@@ -3,36 +3,92 @@ Game Name:Black Jack
 Creater:Jinhong Lin & Jinxiang Chen
 '''
 
-import random
+
 import csv
-from random import sample
 from random import shuffle
+
 
 new_card = []
 card_color = [' ♦', ' ♣', ' ♥', ' ♠']  # ♦ = Diamond, ♣ = Clubs, ♥ = Hearts, ♠ = Spades
 cards1 = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']  # cards in a poker (Jokers not included)
 
+class User_data():
+    import random
+    def __init__(self):
+        self.autosave = True
+
+    def new_user(self,new_user_data):
+        print('Welcome [%s]' % username)
+
+    def user(self):
+        return username
+
+    def del_user(self,old_user_data):
+        pass
+
+    def user_score(self,score):
+        user_score = score
+        return user_score
+
+    def create_csv(self,csv):
+        csv = 0
+        f = open('scores.scv','w+')
+        f.close()
+
+    def top10(self,score):
+        top = []
+        all_scores = []
+
+        with open('scores.csv', 'r') as csvfile:
+            scores = csv.reader(csvfile)
+
+            for row in scores:
+                all_scores.append((row[0], row[1]))
+                top = sorted(
+                    all_scores,
+                    key=lambda score: score[1],
+                    reverse=True)
+        return top[:10]
+
+    def user_gamenum(self,y):
+        y = 0
+        f = open('scores.csv','r')
+        Gcount = 0
+        # Reading from file
+        Content = f.read()
+        f2 = Content.split("\n")
+
+        for i in f2:
+            if i:
+                Gcount += 1
+
+        gamenum = Gcount
+        print('We have found you have %s records!'% gamenum)
+
+    def save_user(self,username):
+        scorelist = []
+        sc = {"Name": username, "score": score}
+        scorelist.append(sc)  # Add student dictionary to list
+        save(scorelist)  # Save student information to file
+        print("Gameover, Thanks for playing [%s]" % (username))
+
+    def load_user(self):
+        f = open('scores.csv', 'r')
+        file_contents = f.read()
+        print('Here is your UserDatas \n\n%s' % file_contents)
+
+
 for i in cards1:  # Create a inside loop to create a deck of poker cards.
     for a in card_color:
         new_card.append(a + i)
 
+
+
 filename = 'scores.csv'
-def add():
-    scorelist = []
-    while True:
-        name = input("Plese Enter Your name：")
-        sc = {"Name": name, "score":score}
-        scorelist.append(sc)  # Add student dictionary to list
-        inputMark = input("Do you want to play again?(y/n):")
-        if inputMark == "Yes":  # Keep adding
-            continue
-        else:  # Do not continue to add
-            break
-    save(scorelist)  # Save student information to file
-    print("Gameover")
+
 
 def over():
-    print('Gameover')
+    print('Gameover, You have exit the game with no data saved.')
 
 def save(scores):
     try:
@@ -49,8 +105,6 @@ def random_card(cards, num=1):
     shuffle(cards)
     return cards
 
-
-
 def game_play(cards):      #start the game, and send both of the players 2 cards.
     if len(cards) < 2:      #check the cards in the deck
         global new_cards
@@ -64,11 +118,9 @@ def game_nextcard(cards):       #if you would like another card
     news = cards.pop()
     return news
 
-
 def total_points(count):        #count the total points for the cards.
     new_count = 0
     news = count.split(',')
-
     count_a = 0     #in this case, A is an special card.
     for i in news:
         if i[2:].isdigit():
@@ -77,7 +129,6 @@ def total_points(count):        #count the total points for the cards.
             count_a += 1
         else:
             new_count += 10
-
     if new_count > 10:      #points for other cards instead of Ace
         new_count += count_a
     elif count_a == 0:
@@ -86,15 +137,40 @@ def total_points(count):        #count the total points for the cards.
         new_count += 10 + count_a
     return new_count
 
-Player_name = 'Jinhong Lin'
+x = User_data()
 AI_name = 'Jimmy'
-score = 0
+score = 0       #score to count the card number
+my_score = 0       #score for you
+ai_score = 0      #score for ai
 scorelist = []
+username = input('Welcome new player!\nWhat is your Username?\n')  # A New Username
+x.new_user(0)
 filename = 'scores.csv'
-
 new_cards=random_card(new_card)
+x.user_gamenum(0)
+x.create_csv(0)
+print('--------------------------------')
+print('Here is the Top 10 Player records!')
+print('--------------------------------')
+print('If you are new, there will be no data')
+print(*x.top10(0), sep = '\n')
+
+name = True
+while name:
+    ai_name = input('Would you like to named your opponent?(Y/N)\n')
+    if ai_name.upper() == 'Y':
+        AI_name = input('Please name your opponent!!!\n')
+        break
+    elif ai_name.upper() == 'N':
+        print('Ok, We will give you a assigned opponent name [%s]' %AI_name)
+        break
+    else:
+        print('Please Enter something I understand...')
+print('--------------------------------')
+
 count_start = True
-while count_start:
+
+while count_start:      #Game Start to loop
     print('❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤')
     print('Welcome to the game [Black Jack]')
     print('❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤')
@@ -125,10 +201,37 @@ while count_start:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print ('☾YOU BUSTED!!![%s] Win this Round!!!☽' % AI_name)
                 print('Your score:',score)
+                while True:
+                    count_start = input('Do you still want to play?(Y/N:)')
+                    if count_start.upper() == 'Y':
+                        new_cards = random_card(new_card)
+                        infor = 'Cards shuffled'
+                        print(infor)
+                        print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                        break
+                    elif count_start.upper() == 'N':
+                        count_start = False
+                        print('Your score:', score)
+                        user = input('Do you want to save you score?(Y/N):')
+                        if user.upper() == "Y":
+                            x.save_user(x.user())
+                            break
+                        elif user.upper() == 'N':
+                            over()
+                            break
+                        else:
+                            print('Enter it again Please!(Y/N)')
+                    else:
+                        print('Enter it again Please!(Y/N)')
+                        score = 0
+                        if computer_new_count > 21:
+                            score = score + 1
+                            print(score)
+
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 break
         elif news.upper() == 'N':
-            if int(new_count) == (computer_new_count):
+            if int(new_count) == int(computer_new_count):
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print('☾You and [%s] same points, Tie!☽' % AI_name)
                 print('Your score:',score)
@@ -157,46 +260,43 @@ while count_start:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print('☾[%s] BUSTED!!!You Win this Round!!!☽' % AI_name)
                 score = score+1
-                print('Your score', score)
+                print('Your score', my_score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
             elif computer_new_count < new_count:
                 print ('[%s] want another card!'%AI_name)
             elif computer_new_count == new_count:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print('☾You and [%s] same points, Tie!☽'%AI_name)
-                print('Your score:', score)
+                print('Your score:', my_score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
             else:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print ('☾[[%s] Win This Round！☽'%AI_name)
-                print('Your score:', score)
+                print('Your score:', my_score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
-    while True:
-        count_start=input('Do you still want to play?(Y/N:)')
-        if count_start.upper() == 'Y':
-            new_cards = random_card(new_card)
-            infor='Cards shuffled'
-            print(infor)
-            print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
-            break
-        elif count_start.upper() == 'N':
-            count_start = False
-            print('Your score:',score)
-            user=input('Do you want to save you score?(Y/N):')
-            if user.upper() == "Y":
-                add()
+        while True:
+            count_start=input('Do you still want to play?(Y/N:)')
+            if count_start.upper() == 'Y':
+                new_cards = random_card(new_card)
+                infor='Cards shuffled'
+                print(infor)
+                print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 break
-            elif user.upper() =='N':
-                over()
-                break
+            elif count_start.upper() == 'N':
+                count_start = False
+                print('Your score:',score)
+                user=input('Do you want to save you score?(Y/N):')
+                if user.upper() == "Y":
+                    x.save_user(x.user())
+                    break
+                elif user.upper() =='N':
+                    over()
+                    break
+                else:
+                    print('Enter it again Please!(Y/N)')
             else:
-                print('Enter it again Please!(Y/N)')
-
-        else:
-            print ('Enter it again Please!(Y/N)')
-
-            score = 0
-            if computer_new_count > 21:
-                score = score+1
-                print(score)
-
+                print ('Enter it again Please!(Y/N)')
+                score = 0
+                if computer_new_count > 21:
+                    score = score+1
+                    print(score)
