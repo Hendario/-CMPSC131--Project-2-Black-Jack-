@@ -18,8 +18,10 @@ class User_data():
         self.autosave = True
 
     def new_user(self,new_user_data):
-        username = input('Welcome new player!\nWhat is your Username?\n')  # A New Username
         print('Welcome [%s]' % username)
+
+    def user(self):
+        return username
 
     def del_user(self,old_user_data):
         pass
@@ -27,6 +29,11 @@ class User_data():
     def user_score(self,score):
         user_score = score
         return user_score
+
+    def create_csv(self,csv):
+        csv = 0
+        f = open('scores.scv','w+')
+        f.close()
 
     def top10(self,score):
         top = []
@@ -58,8 +65,7 @@ class User_data():
         gamenum = Gcount
         print('We have found you have %s records!'% gamenum)
 
-    def save_user(self,x):
-        x = 0
+    def save_user(self,username):
         scorelist = []
         sc = {"Name": username, "score": score}
         scorelist.append(sc)  # Add student dictionary to list
@@ -133,19 +139,22 @@ def total_points(count):        #count the total points for the cards.
 
 x = User_data()
 AI_name = 'Jimmy'
-score = 0       #score for you
-score2 = 0      #score for ai
+score = 0       #score to count the card number
+my_score = 0       #score for you
+ai_score = 0      #score for ai
 scorelist = []
-username = 0
+username = input('Welcome new player!\nWhat is your Username?\n')  # A New Username
+x.new_user(0)
 filename = 'scores.csv'
 new_cards=random_card(new_card)
 x.user_gamenum(0)
+x.create_csv(0)
 print('--------------------------------')
 print('Here is the Top 10 Player records!')
 print('--------------------------------')
 print('If you are new, there will be no data')
 print(*x.top10(0), sep = '\n')
-x.new_user(0)
+
 name = True
 while name:
     ai_name = input('Would you like to named your opponent?(Y/N)\n')
@@ -192,7 +201,33 @@ while count_start:      #Game Start to loop
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print ('☾YOU BUSTED!!![%s] Win this Round!!!☽' % AI_name)
                 print('Your score:',score)
-                count_start = input('Do you still want to play?(Y/N:)')
+                while True:
+                    count_start = input('Do you still want to play?(Y/N:)')
+                    if count_start.upper() == 'Y':
+                        new_cards = random_card(new_card)
+                        infor = 'Cards shuffled'
+                        print(infor)
+                        print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
+                        break
+                    elif count_start.upper() == 'N':
+                        count_start = False
+                        print('Your score:', score)
+                        user = input('Do you want to save you score?(Y/N):')
+                        if user.upper() == "Y":
+                            x.save_user(x.user())
+                            break
+                        elif user.upper() == 'N':
+                            over()
+                            break
+                        else:
+                            print('Enter it again Please!(Y/N)')
+                    else:
+                        print('Enter it again Please!(Y/N)')
+                        score = 0
+                        if computer_new_count > 21:
+                            score = score + 1
+                            print(score)
+
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 break
         elif news.upper() == 'N':
@@ -225,19 +260,19 @@ while count_start:      #Game Start to loop
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print('☾[%s] BUSTED!!!You Win this Round!!!☽' % AI_name)
                 score = score+1
-                print('Your score', score)
+                print('Your score', my_score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
             elif computer_new_count < new_count:
                 print ('[%s] want another card!'%AI_name)
             elif computer_new_count == new_count:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print('☾You and [%s] same points, Tie!☽'%AI_name)
-                print('Your score:', score)
+                print('Your score:', my_score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
             else:
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
                 print ('☾[[%s] Win This Round！☽'%AI_name)
-                print('Your score:', score)
+                print('Your score:', my_score)
                 print('☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆')
         while True:
             count_start=input('Do you still want to play?(Y/N:)')
@@ -252,7 +287,7 @@ while count_start:      #Game Start to loop
                 print('Your score:',score)
                 user=input('Do you want to save you score?(Y/N):')
                 if user.upper() == "Y":
-                    x.save_user(0)
+                    x.save_user(x.user())
                     break
                 elif user.upper() =='N':
                     over()
